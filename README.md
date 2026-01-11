@@ -139,12 +139,6 @@ npm run lint
 
 # Code formatting
 npm run format
-
-# Testing
-npm test              # Run tests in watch mode
-npm run test:ui       # Run tests with UI
-npm run test:run      # Run tests once
-npm run test:coverage # Run tests with coverage report
 ```
 
 ## Testing

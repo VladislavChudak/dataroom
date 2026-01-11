@@ -9,12 +9,26 @@ interface DataroomItemProps {
   dataroom: Dataroom
   isActive?: boolean
   onDelete: (dataroomId: string) => void
+  totalDatarooms: number
 }
 
-export const DataroomItem = memo(function DataroomItem({ dataroom, isActive, onDelete }: DataroomItemProps) {
+export const DataroomItem = memo(function DataroomItem({
+  dataroom,
+  isActive,
+  onDelete,
+  totalDatarooms,
+}: DataroomItemProps) {
+  const showDeleteButton = totalDatarooms > 1
+
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    e.stopPropagation()
+    onDelete(dataroom.id)
+  }
+
   return (
-    <div className="flex items-center justify-between">
-      <Link to={`/dataroom/${dataroom.id}`} className="flex-1">
+    <div className="group relative w-full">
+      <Link to={`/dataroom/${dataroom.id}`} className="block w-full">
         <Button
           variant="ghost"
           className={cn(
@@ -27,14 +41,16 @@ export const DataroomItem = memo(function DataroomItem({ dataroom, isActive, onD
           <span className="truncate">{dataroom.name}</span>
         </Button>
       </Link>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="text-muted-foreground h-9 w-9 flex-shrink-0"
-        onClick={() => onDelete(dataroom.id)}
-      >
-        <Trash2 className="h-4 w-4" />
-      </Button>
+      {showDeleteButton && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-muted-foreground absolute top-0 right-0 h-9 w-9 opacity-0 transition-opacity group-hover:opacity-100"
+          onClick={(e) => handleDelete(e)}
+        >
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      )}
     </div>
   )
 })

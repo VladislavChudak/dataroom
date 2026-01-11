@@ -43,7 +43,6 @@ export function DataroomSidebar({
 
   return (
     <>
-      {/* Backdrop for mobile */}
       {isOpen && <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={onClose} />}
 
       {/* Sidebar */}
@@ -89,6 +88,7 @@ export function DataroomSidebar({
                     dataroom={dataroom}
                     isActive={activeDataroomId === dataroom.id}
                     onDelete={setDataroomToDelete}
+                    totalDatarooms={datarooms.length}
                   />
                 </div>
               ))

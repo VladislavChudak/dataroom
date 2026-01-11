@@ -1,4 +1,5 @@
 import { useGetDataroomById, useDeleteDataroom } from '../hooks/useDatarooms'
+import { useNavigate, useParams } from 'react-router-dom'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -15,20 +16,32 @@ interface DeleteDataroomConfirmationDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   dataroomId: string
+  onDeleteSuccess?: () => void
 }
 
 export function DeleteDataroomConfirmationDialog({
   open,
   onOpenChange,
   dataroomId,
+  onDeleteSuccess,
 }: DeleteDataroomConfirmationDialogProps) {
   const { data: dataroom } = useGetDataroomById(dataroomId)
   const deleteDataroom = useDeleteDataroom()
+  const navigate = useNavigate()
+  const params = useParams<{ dataroomId: string }>()
+
+  const isCurrentDataroom = params.dataroomId === dataroomId
 
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     deleteDataroom.mutate(dataroomId, {
-      onSuccess: () => onOpenChange(false),
+      onSuccess: () => {
+        onOpenChange(false)
+        if (isCurrentDataroom) {
+          navigate('/')
+        }
+        onDeleteSuccess?.()
+      },
     })
   }
 

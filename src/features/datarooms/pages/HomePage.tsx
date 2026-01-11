@@ -6,19 +6,17 @@ import { Button } from '@/components/ui/button'
 import { CreateDataroomDialog } from '../components/CreateDataroomDialog'
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner'
 import { AppLogo } from '@/components/shared/AppLogo'
-import { useIsDesktop } from '@/hooks/useMediaQuery'
 
 export function HomePage() {
   const { data: datarooms, isLoading } = useDatarooms()
   const navigate = useNavigate()
   const [showCreate, setShowCreate] = useState(false)
-  const isDesktop = useIsDesktop()
 
   useEffect(() => {
     if (datarooms && datarooms.length) {
       navigate(`/dataroom/${datarooms[0].id}`)
     }
-  }, [datarooms, navigate, isDesktop])
+  }, [datarooms, navigate])
 
   if (!isLoading && (!datarooms || !datarooms.length)) {
     return (

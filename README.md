@@ -2,6 +2,7 @@
 
 A document management application built with React and TypeScript. Features Google Drive-inspired interface for organizing files and folders with authentication and local storage.
 
+Live demo available at: https://dataroom-kappa.vercel.app/
 ## Overview
 
 This is a frontend-focused project that demonstrates modern React patterns and clean architecture. It uses Firebase Authentication for user management and IndexedDB for client-side storage, making it fully functional without a backend server.

@@ -45,7 +45,7 @@ export const DataroomItem = memo(function DataroomItem({
         <Button
           variant="ghost"
           size="icon"
-          className="text-muted-foreground absolute top-0 right-0 h-9 w-9 opacity-0 transition-opacity group-hover:opacity-100"
+          className="text-muted-foreground absolute top-0 right-0 h-9 w-9"
           onClick={(e) => handleDelete(e)}
         >
           <Trash2 className="h-4 w-4" />

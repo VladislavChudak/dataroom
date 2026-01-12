@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { renderWithProviders, userEvent } from '@/test/utils'
 import { SearchBar } from './SearchBar'
 
@@ -28,9 +28,13 @@ describe('SearchBar', () => {
     const input = screen.getByPlaceholderText('Search...')
     await user.type(input, 'new search')
 
-    expect(onChange).toHaveBeenCalled()
-    // Check that onChange was called with each character
-    expect(onChange).toHaveBeenCalledWith('n')
+    // Wait for the 500ms debounce to trigger
+    await waitFor(
+      () => {
+        expect(onChange).toHaveBeenCalledWith('new search')
+      },
+      { timeout: 1000 }
+    )
   })
 
   it('should show clear button when value is not empty', () => {
@@ -57,7 +61,13 @@ describe('SearchBar', () => {
     const clearButton = screen.getByRole('button')
     await user.click(clearButton)
 
-    expect(onChange).toHaveBeenCalledWith('')
+    // Wait for the 500ms debounce to trigger
+    await waitFor(
+      () => {
+        expect(onChange).toHaveBeenCalledWith('')
+      },
+      { timeout: 1000 }
+    )
   })
 
   it('should autofocus when autoFocus prop is true', () => {

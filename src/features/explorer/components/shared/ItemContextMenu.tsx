@@ -1,4 +1,4 @@
-import { MoreVertical, Pencil, Trash2, Eye, Download } from 'lucide-react'
+import { MoreVertical, Pencil, Trash2, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -32,11 +32,6 @@ export function ItemContextMenu({ itemType, onRename, onDelete, onView }: ItemCo
               <Eye className="mr-2 h-4 w-4" />
               View
             </DropdownMenuItem>
-            <DropdownMenuItem disabled>
-              <Download className="mr-2 h-4 w-4" />
-              Download
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
           </>
         )}
         <DropdownMenuItem onClick={onRename}>

@@ -20,6 +20,7 @@ export function TopNavBar({ searchQuery, onSearchChange, onMenuClick }: TopNavBa
     try {
       await signOut()
     } catch (error) {
+      console.error(error)
       // Error is already handled in useAuth hook with toast notification
     }
   }

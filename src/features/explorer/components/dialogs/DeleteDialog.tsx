@@ -104,10 +104,13 @@ export function DeleteDialog({
             <div className="bg-destructive/10 flex h-10 w-10 items-center justify-center rounded-full">
               <AlertTriangle className="text-destructive h-5 w-5" />
             </div>
-            <AlertDialogTitle>Delete {item.name}?</AlertDialogTitle>
+            <AlertDialogTitle className="max-w-[300px] text-left break-words sm:max-w-[380px]">
+              Delete {item.name}?
+            </AlertDialogTitle>
           </div>
-          <AlertDialogDescription className="pt-2">
-            {description} This action cannot be undone.
+          <AlertDialogDescription className="max-w-[350px] pt-2 text-left break-words sm:max-w-[450px]">
+            {description}
+            <p>This action cannot be undone.</p>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

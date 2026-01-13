@@ -17,7 +17,7 @@ export function EmptyState({ dataroomId, folderId, onCreateFolder }: EmptyStateP
       <div className="text-center">
         <h3 className="mb-2 text-lg font-semibold md:text-xl">This folder is empty</h3>
         <p className="text-muted-foreground mb-4 px-4 text-xs md:mb-6 md:text-sm">
-          Get started by creating a folder or uploading files
+          Get started by creating a folder, uploading files, or drag & drop files here
         </p>
         <div className="flex flex-col items-center justify-center gap-2 sm:flex-row md:gap-3">
           <Button onClick={onCreateFolder} className="w-full gap-2 sm:w-auto">

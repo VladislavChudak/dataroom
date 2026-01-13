@@ -105,10 +105,7 @@ class IndexedDBRepository implements DataroomRepository {
       .equals([args.dataroomId, args.parentId])
       .toArray()
 
-    const existingNames = existingFolders.map((f) => f.name)
-    if (existingNames.includes(args.name)) {
-      throw new Error('A folder with this name already exists')
-    }
+    this.checkDuplicateName(existingFolders, args.name)
 
     const now = new Date()
     const folder: Folder = {
@@ -134,10 +131,7 @@ class IndexedDBRepository implements DataroomRepository {
       .equals([folder.dataroomId, folder.parentId || ''])
       .toArray()
 
-    const existingNames = siblings.filter((f) => f.id !== args.folderId).map((f) => f.name)
-    if (existingNames.includes(args.name)) {
-      throw new Error('A folder with this name already exists')
-    }
+    this.checkDuplicateName(siblings, args.name, args.folderId)
 
     await db.folders.update(args.folderId, {
       name: args.name,
@@ -171,6 +165,20 @@ class IndexedDBRepository implements DataroomRepository {
     }
 
     return allIds
+  }
+
+  private checkDuplicateName(
+    items: Array<{ id?: string; name: string }>,
+    name: string,
+    excludeId?: string
+  ): void {
+    const existingNames = items
+      .filter((item) => !excludeId || item.id !== excludeId)
+      .map((item) => item.name.toLowerCase())
+
+    if (existingNames.includes(name.toLowerCase())) {
+      throw new Error('An item with this name already exists')
+    }
   }
 
   async countFolderContents(folderId: string): Promise<{ folders: number; files: number }> {
@@ -272,10 +280,7 @@ class IndexedDBRepository implements DataroomRepository {
       .equals([file.dataroomId, file.folderId])
       .toArray()
 
-    const existingNames = siblings.filter((f) => f.id !== args.fileId).map((f) => f.name)
-    if (existingNames.includes(args.name)) {
-      throw new Error('A file with this name already exists')
-    }
+    this.checkDuplicateName(siblings, args.name, args.fileId)
 
     await db.files.update(args.fileId, {
       name: args.name,

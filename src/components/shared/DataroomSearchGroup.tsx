@@ -1,3 +1,4 @@
+import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { Folder, FileMetadata } from '@/repo/types'
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -6,6 +7,7 @@ import { FolderRow } from '@/features/explorer/components/table/FolderRow'
 import { FileRow } from '@/features/explorer/components/table/FileRow'
 import { MobileItemsList } from '@/features/explorer/components/mobile/MobileItemsList'
 import { useIsDesktop } from '@/hooks/useMediaQuery'
+import { sortFolderContents, type SortConfig } from '@/lib/sorting'
 
 interface DataroomSearchGroupProps {
   dataroomId: string
@@ -32,7 +34,14 @@ export function DataroomSearchGroup({
 }: DataroomSearchGroupProps) {
   const navigate = useNavigate()
   const isDesktop = useIsDesktop()
+  const [sortConfig, setSortConfig] = useState<SortConfig>({ field: 'name', order: 'asc' })
   const totalItems = folders.length + files.length
+
+  // Sort folders and files together for mobile view
+  const sortedItems = useMemo(
+    () => sortFolderContents(folders, files, sortConfig),
+    [folders, files, sortConfig]
+  )
 
   return (
     <div className="mb-4 md:mb-6">
@@ -84,8 +93,9 @@ export function DataroomSearchGroup({
         /* Mobile Card View - Only render on mobile */
         <MobileItemsList
           dataroomId={dataroomId}
-          folders={folders}
-          files={files}
+          sortedItems={sortedItems}
+          sortConfig={sortConfig}
+          onSortChange={setSortConfig}
           onFolderRename={onFolderRename}
           onFolderDelete={onFolderDelete}
           onFileView={onFileView}

@@ -38,7 +38,7 @@ export const DataroomItem = memo(function DataroomItem({
           )}
         >
           <Folder className="h-4 w-4 text-[var(--folder-blue)]" />
-          <span className="truncate">{dataroom.name}</span>
+          <span className="w-[70%] truncate text-left">{dataroom.name}</span>
         </Button>
       </Link>
       {showDeleteButton && (

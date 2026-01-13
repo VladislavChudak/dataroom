@@ -32,6 +32,7 @@ export function CreateFolderDialog({
     if (!newOpen) {
       setName('')
     }
+
     onOpenChange(newOpen)
   }
 
@@ -43,7 +44,7 @@ export function CreateFolderDialog({
       { dataroomId, parentId, name: name.trim() },
       {
         onSuccess: () => {
-          onOpenChange(false)
+          handleOpenChange(false)
         },
       }
     )
@@ -70,7 +71,7 @@ export function CreateFolderDialog({
             <Button
               type="button"
               variant="ghost"
-              onClick={() => onOpenChange(false)}
+              onClick={() => handleOpenChange(false)}
               disabled={createFolder.isPending}
             >
               Cancel

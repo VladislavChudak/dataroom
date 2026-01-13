@@ -2,11 +2,14 @@ import { useNavigate } from 'react-router-dom'
 import type { Folder, FileMetadata } from '@/repo/types'
 import { MobileFolderCard } from './MobileFolderCard'
 import { MobileFileCard } from './MobileFileCard'
+import { type SortConfig, type ItemWithType } from '@/lib/sorting'
+import { SortDropdown } from '@/components/shared/SortDropdown'
 
 interface MobileItemsListProps {
   dataroomId: string
-  folders: Folder[]
-  files: FileMetadata[]
+  sortedItems: ItemWithType[]
+  sortConfig: SortConfig
+  onSortChange: (config: SortConfig) => void
   onFolderRename: (folder: Folder) => void
   onFolderDelete: (folder: Folder) => void
   onFileView: (fileId: string) => void
@@ -16,8 +19,9 @@ interface MobileItemsListProps {
 
 export function MobileItemsList({
   dataroomId,
-  folders,
-  files,
+  sortedItems,
+  sortConfig,
+  onSortChange,
   onFolderRename,
   onFolderDelete,
   onFileView,
@@ -28,25 +32,31 @@ export function MobileItemsList({
 
   return (
     <div className="mt-2 space-y-2">
-      {folders.map((folder) => (
-        <MobileFolderCard
-          key={folder.id}
-          folder={folder}
-          onNavigate={() => navigate(`/dataroom/${dataroomId}/folder/${folder.id}`)}
-          onRename={() => onFolderRename(folder)}
-          onDelete={() => onFolderDelete(folder)}
-        />
-      ))}
+      <SortDropdown
+        sortConfig={sortConfig}
+        onSortChange={onSortChange}
+        itemCount={sortedItems.length}
+      />
 
-      {files.map((file) => (
-        <MobileFileCard
-          key={file.id}
-          file={file}
-          onView={() => onFileView(file.id)}
-          onRename={() => onFileRename(file)}
-          onDelete={() => onFileDelete(file)}
-        />
-      ))}
+      {sortedItems.map((item) =>
+        item.type === 'folder' ? (
+          <MobileFolderCard
+            key={`folder-${item.item.id}`}
+            folder={item.item}
+            onNavigate={() => navigate(`/dataroom/${dataroomId}/folder/${item.item.id}`)}
+            onRename={() => onFolderRename(item.item)}
+            onDelete={() => onFolderDelete(item.item)}
+          />
+        ) : (
+          <MobileFileCard
+            key={`file-${item.item.id}`}
+            file={item.item}
+            onView={() => onFileView(item.item.id)}
+            onRename={() => onFileRename(item.item)}
+            onDelete={() => onFileDelete(item.item)}
+          />
+        )
+      )}
     </div>
   )
 }
